@@ -1,0 +1,1221 @@
+
+<ion-view view-title="{{zhuyuanData.name}}">
+
+    <ion-nav-buttons side="left">
+        <a href=" #/sidemenu/zhuyuan"> <button class="button button-clear icon ion-chevron-left"  >
+        </button></a>
+    </ion-nav-buttons>
+    <ion-scroll class="has-header bgGray"  direction="x" style="width: 100%;height:9%;overflow: auto;" >
+        <div>
+            <div style="width: 660px;text-align: center;padding: 13px;overflow: auto; ">
+                <div ng-class="isActive=='c'?'myitem active':'myitem'" data-active="c" ng-click="changeTab($event)">住院信息</div>
+                <div ng-class="isActive=='a'?'myitem active':'myitem'" data-active="a" ng-click="changeTab($event)">一日清单</div>
+                <div ng-class="isActive=='b'?'myitem active':'myitem'" data-active="b" ng-click="changeTab($event)">住院服务</div>
+                <div ng-class="isActive=='d'?'myitem active':'myitem'" data-active="d" ng-click="changeTab($event)">检验报告</div>
+                <div ng-class="isActive=='e'?'myitem active':'myitem'" data-active="e" ng-click="changeTab($event)">长期医嘱</div>
+                <div ng-class="isActive=='f'?'myitem active':'myitem'" data-active="f" ng-click="changeTab($event)">临时医嘱</div>
+            </div>
+        </div>
+    </ion-scroll>
+
+     <ion-content class="has-subheader bgGray">
+    
+        <!--  --------------------------------住院信息------------------------------------------------------ -->
+
+        <div ng-if="isActive == 'c'">
+                <label class="item item-input item-divider bgWhite" style="border-top: none;">
+                    <span class="width23 textRight">姓名:</span>
+                    <span class="width77 paddingLeft">{{patientregc.name}}</span>
+                </label>
+                <label class="item item-input item-divider bgWhite"  >
+                    <span class="width23 textRight">性别:</span>
+                    <span class="width77 paddingLeft">{{patientregc.genderCd}}</span>
+                </label>
+	            <label class="item item-input item-divider bgWhite" >
+	                <span class="width23 textRight">出生日期:</span>
+	                <span class="width77 paddingLeft">{{patientregc.birthDate| date:"yyyy-MM-dd"}}</span>
+	            </label>
+	            <label class="item item-input item-divider bgWhite" >
+	                <span class="width23 textRight">身份证号:</span>
+	                <span class="width77 paddingLeft">{{patientregc.idNo}}</span>
+	            </label>
+	            <label class="item item-input item-divider bgWhite" >
+	                <span class="width23 textRight">婚姻状况:</span>
+	                <span class="width77 paddingLeft">{{patientregc.maritalStCd}}</span>
+	            </label>
+	            <label class="item item-input item-divider bgWhite" >
+	                <span class="width23 textRight">地址:</span>
+	                <span class="width77 paddingLeft">{{patientregc.provinceName}}&nbsp;{{patientregc.cityName}}&nbsp;{{patientregc.areaName}}&nbsp;{{patientregc.streetId}}&nbsp;{{patientregc.villageName}}&nbsp;{{patientregc.houseNo}}</span>
+	            </label>
+                <label class="item item-input item-divider bgWhite"  >
+                    <span class="width23 textRight">科室:</span>
+                    <span class="width77 paddingLeft">{{inhosregc.ward}}</span>
+                </label>
+                <label class="item item-input item-divider bgWhite" >
+                    <span class="width23 textRight">床位:</span>
+                    <span class="width77 paddingLeft">{{inhosregc.medicalBedNo}}</span>
+                </label>
+                <label class="item item-input item-divider bgWhite" >
+                    <span class="width23 textRight">住院号:</span>
+                    <span class="width77 paddingLeft">{{inhosregc.inHosNo}}</span>
+                </label>
+                <label class="item item-input item-divider bgWhite" >
+                    <span class="width23 textRight">入院日期:</span>
+                    <span class="width77 paddingLeft">{{inhosregc.inpatDate| date:"yyyy-MM-dd"}}</span>
+                </label>
+        </div>
+
+        <!--  --------------------------------一日清单------------------------------------------------------ -->
+
+        <div ng-if="isActive == 'a'">
+                <label class="item item-input item-select" style="margin-bottom: 10px;">
+                    <span style="font-size:20px;"><i class="ion-calendar fontBlue"></i></span>
+                    <span class="input-label">&nbsp;费用日期:</span>
+                    <select  ng-model="selectDate" ng-change="selectOption(selectDate)" style="float:left">
+
+                        <option ng-repeat="date in selectDates">{{date}}</option>
+
+                    </select>
+                </label>
+
+            <ion-list>
+                <div ng-repeat="item in qingdanItems">
+                    <ion-item ng-click="toggleGroup(item)"
+                              ng-class="isGroupShown(item) ? 'bgGray': 'bgWhite'">
+                        <i class="icon" ng-class="isGroupShown(item) ? 'ion-minus' : 'ion-plus'"></i>
+                        &nbsp;
+                        {{item.detailItemName}}&nbsp;<font style="float:right" class="fontBlue">({{item.detailItemCost}}&nbsp;元)</font>
+                    </ion-item>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width20">单位:</span>
+                        <span class="width80">{{item.detailItemUnit}}</span>
+                    </label>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width20">单价:</span>
+                        <span class="width80">{{item.detailItemUPrice}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width20">数量:</span>
+                        <span class="width80">{{item.detailItemAmount}}</span>
+                    </label>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width20">金额:</span>
+                        <span class="width80">{{item.detailItemCost}}&nbsp;元</span>
+                    </label>
+                </div>
+            </ion-list>
+        </div>
+
+
+        <!--  --------------------------------住院服务------------------------------------------------------ -->
+
+        <div ng-if="isActive == 'b'">
+          <!--  <div class="item item-balanced" style="font-size:18px;color:#f8f8f8;height:50px;;margin-bottom: 5px"  ng-click="showLinchangfuwuItem()">
+                <i class="icon ion-edit"></i> 临床服务记录 <i class="icon" style="float: right" ng-class=" linchuangfuwuItem.show ? 'ion-minus' : 'ion-plus'"></i></div>
+            <div ng-repeat="item in linchuangfuwuItem.items">
+                <label class="item item-input item-divider" ng-show=' linchuangfuwuItem.show' >
+                    <span class="width50">{{item.title}}:</span>
+                    <span class="width50">{{item.content}} </span>
+                </label>
+            </div>-->
+
+
+
+
+            <div class="item itemFirst" ng-click="showRuyuanzhenduanItem()">
+               	入院诊断记录 <i class="icon fontBlue" style="float: right" ng-class=" ruyuanzhenduanShow ? 'ion-chevron-up' : 'ion-chevron-down'"></i></div>
+
+     <div ng-show='ruyuanzhenduanShow' style="border-radius: 5px;margin: 5px 5px 10px 5px" class="bgGray">
+       		<div class="divmain">主诊断</div>
+            <table class="tablef">
+	            <tr class="TRborder">
+	                <td width="33%" class="TDf">疾病名称</td>
+	                <td width="33%" class="TDf">诊断日期</td>
+	                <td width="33%" class="TDf">疾病状态</td>
+	                
+	            </tr>
+	            <tr class="TRborder">
+	                <td class="TDf">{{ruyuanzhenduanItem.inpatDiagName}}</td>
+	                <td class="TDf">{{ruyuanzhenduanItem.diagDate| date:"yyyy-MM-dd "}}</td>
+	                <td class="TDf">{{ruyuanzhenduanItem.inpatDiStatus}}</td>
+	            </tr>
+            </table>
+         	<div class="divmain">次诊断</div>
+        	<table class="tablef">
+	            <tr class="TRborder">
+	                <td width="33%" class="TDf">疾病名称</td>
+	                <td width="33%" class="TDf">诊断日期</td>
+	                <td width="33%" class="TDf">疾病状态</td>
+	                
+	            </tr>
+	            <tr class="TRborder" ng-repeat="item in ruyuanzhenduanItems">
+	                <td class="TDf">{{item.inpatDiagName}}</td>
+	                <td class="TDf">{{item.diagDate| date:"yyyy-MM-dd "}}</td>
+	                <td class="TDf">{{item.inpatDiStatus}}</td>
+	            </tr>
+        	</table>
+     	</div>
+
+          <!--  <ion-list>
+                <div ng-repeat="item in ruyuanzhenduanItem" ng-show='  ruyuanzhenduanShow'>
+                    <ion-item class="item-stable"  ng-click="toggleGroup(item)"  ng-class="{active: isGroupShown(item)}">
+                        <i class="icon" ng-class="isGroupShown(item) ? 'ion-minus' : 'ion-plus'"></i>
+                        &nbsp;
+                        {{item.inpatDiagName}}
+                    </ion-item>
+                    <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                        <span class="width40">疾病状态:</span>
+                        <span class="width60">{{item.inpatDiStatus}}</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                        <span class="width40">诊断日期:</span>
+                        <span class="width60">{{item.diagDate}}</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                        <span class="width40">疾病代码:</span>
+                        <span class="width60">{{item.inpatDiagCd}}</span>
+                    </label>
+
+                </div>
+            </ion-list>
+-->
+
+            <div class="item itemFirst" ng-click="showChuyuanzhenduanItem()">
+                	出院诊断记录 <i class="icon fontBlue" style="float: right" ng-class=" chuyuanzhenduanShow ? 'ion-chevron-up' : 'ion-chevron-down'"></i>
+            </div>
+            <div ng-show='chuyuanzhenduanShow' style="border-radius: 5px;margin: 5px 5px 10px 5px"  class="bgGray">
+                <div class="divmain">主诊断</div>
+                <table class="tablef">
+		            <tr class="TRborder">
+		                <td width="33%" class="TDf">疾病名称</td>
+		                <td width="33%" class="TDf">诊断日期</td>
+		                <td width="33%" class="TDf">疾病状态</td>
+		                
+		            </tr>
+		            <tr class="TRborder">
+		                <td class="TDf">{{chuyuanzhenduanItem.outpatDiagName}}</td>
+		                <td class="TDf">{{chuyuanzhenduanItem.confDate| date:"yyyy-MM-dd "}}</td>
+		                <td class="TDf">{{chuyuanzhenduanItem.inpatTrResultCd}}</td>
+		            </tr>
+		        </table>
+                
+                
+                <div class="divmain">次诊断</div>
+                 <table class="tablef">
+		            <tr class="TRborder">
+		                <td width="33%" class="TDf">疾病名称</td>
+		                <td width="33%" class="TDf">诊断日期</td>
+		                <td width="33%" class="TDf">疾病状态</td>
+		                
+		            </tr>
+		            <tr ng-repeat="item in chuyuanzhenduanItems" class="TRborder">
+		                <td class="TDf"> {{item.outpatDiagName}}</td>
+		                <td class="TDf">{{item.confDate| date:"yyyy-MM-dd "}}</td>
+		                <td class="TDf">{{item.inpatTrResultCd}}</td>
+		            </tr>
+		        </table>
+            </div>
+
+            <div class="item itemFirst" ng-click="showYongyaoItem()">
+                	 用药记录 <i class="icon fontBlue" style="float: right" ng-class=" yongyaoShow ? 'ion-chevron-up' : 'ion-chevron-down'"></i>
+            </div>
+
+            <ion-list>
+                <div ng-repeat="item in yongyaoItem" ng-show=' yongyaoShow'>
+                    <ion-item class="item-stable"  ng-click="toggleGroup(item)"  ng-class="{active: isGroupShown(item)}">
+                        <i class="icon" ng-class="isGroupShown(item) ? 'ion-minus' : 'ion-plus'"></i>
+                        &nbsp;
+                        {{item.drugName}}
+                    </ion-item>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width40">药物名称:</span>
+                        <span class="width60">{{item.drugName}}</span>
+                    </label>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width40">药物剂型:</span>
+                        <span class="width60">{{item.doseTypeCd}}</span>
+                    </label>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width40">用药天数:</span>
+                        <span class="width60">{{item.usingDrugDays}}</span>
+                    </label>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width40">用药停止日期:</span>
+                        <span class="width60">{{item.drugQuitDateTs| date:"yyyy-MM-dd"}}</span>
+                    </label>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width40">频率:</span>
+                        <span class="width60">{{item.usingDrugFreq}}</span>
+                    </label>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width40">次剂量/单位:</span>
+                        <span class="width60">{{item.doseSingle}}/{{item.unit}}</span>
+                    </label>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width40">途径:</span>
+                        <span class="width60">{{item.drugWayCd}}</span>
+                    </label>
+                </div>
+            </ion-list>
+            <div class="item itemFirst" ng-click="showShoushuItem()">
+                	 手术记录 <i class="icon fontBlue" style="float: right" ng-class=" shoushuShow ? 'ion-chevron-up' : 'ion-chevron-down'"></i></div>
+            <ion-list>
+                <div ng-repeat="item in shoushuItem" ng-show='shoushuShow'>
+                    <ion-item class="item-stable"
+                              ng-click="toggleGroup(item)"
+                              ng-class="{active: isGroupShown(item)}">
+                        <i class="icon" ng-class="isGroupShown(item) ? 'ion-minus' : 'ion-plus'"></i>
+                        &nbsp;
+                        {{item.opName}}&nbsp;{{item.opDate| date:"yyyy-MM-dd"}}
+                    </ion-item>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width50 ">麻醉方法:</span>
+                        <span class="width50">{{item.anaesWayCd}}</span>
+                    </label>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width50">手术/操纵目标部位:</span>
+                        <span class="width50">{{item.opPartName}}</span>
+                    </label>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width50">手术者名称:</span>
+                        <span class="width50">{{item.operatorName}}</span>
+                    </label>
+                    <!--</label>-->
+                    <!--<label class="item item-input item-divider" ng-show="isGroupShown(item)" >-->
+                        <!--<span class="input-label">手术时间:</span>-->
+                        <!--<span class="input-label">{{item.riqi}}</span>-->
+                    <!--</label>-->
+                </div>
+            </ion-list>
+
+            <div class="item itemFirst" ng-click="showFangshezhiliaoItem()">
+                	 放射治疗记录 <i class="icon fontBlue" style="float: right" ng-class="fangshezhiliaoShow ? 'ion-chevron-up' : 'ion-chevron-down'"></i></div>
+            <ion-list>
+                <div ng-repeat="item in fangshezhiliaoItem" ng-show='fangshezhiliaoShow'>
+                    <ion-item
+                            ng-click="toggleGroup(item)"
+                            ng-class="{active: isGroupShown(item)}">
+                        <i style="float: left;width: 10%" class="icon" ng-class="isGroupShown(item) ? 'ion-minus' : 'ion-plus'"></i>
+                        &nbsp;
+                        <span style="float: left;width: 80%" > {{item.treatmentTypeName}} &nbsp;{{item.treatmentDate| date:"yyyy-MM-dd"}}</span>
+
+                    </ion-item>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width35">材料类型:</span>
+                        <span class="width65">{{item.materialType}}</span>
+                    </label>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width35">材料名称:</span>
+                        <span class="width65">{{item.materialName}}</span>
+                    </label>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width35">治疗过程描述:</span>
+                        <span class="width65">{{item.treatmentProcessDescribe}}</span>
+                    </label>
+                    <label class="item item-input item-divider bgWhite" ng-show="isGroupShown(item)" >
+                        <span class="width35">治疗结果描述:</span>
+                        <span class="width65">{{item.treatmentResultDescribe}}</span>
+                    </label>
+
+                </div>
+            </ion-list>
+            <div>
+                <div class="item itemFirst" ng-click="showYingxiangItem()">
+                    	影像检查记录 <i class="icon fontBlue" style="float: right" ng-class="yingxiangShow ? 'ion-chevron-up' : 'ion-chevron-down'"></i>
+                </div>
+            <!--<ion-list>-->
+                <div  ng-show='yingxiangShow' ng-repeat="item in yingxiangItem" style="font-size: x-small;padding-left: 10px;background-color: #EFEDEF;border-radius: 5px;margin: 5px">
+                    <div class="yingxiang">摄片日期:{{item.photoDate| date:"yyyy-MM-dd"}}</div>
+                    <div class="yingxiang">摄片类型:{{item.testItemName}}</div>
+                    <div>摄片号码:{{item.photoNo}}</div>
+                    <div class="yingxiang">申请医生:{{item.applyDocName}}</div>
+                    <div class="yingxiang" style="padding-bottom: 10px;">申请科室:{{item.applyDept}}</div>
+                    <div style="padding-top: 10px;"><strong>征象:</strong></div>
+                    <div style="padding: 5px 15px;">{{item.symptom}}</div>
+                    <div><strong>结论:</strong></div>
+                    <div style="padding: 5px 15px;">{{item.conclusion}}</div>
+                </div>
+            </div>
+<!--            <div>
+                <div class="item item-balanced" style="font-size:18px;color:#f8f8f8;height:50px;;margin-bottom: 5px"  ng-click="showSxjlItem()">
+                    <i class="icon ion-edit"></i> 输血记录 <i class="icon" style="float: right" ng-class="sxjlItem.show ? 'ion-minus' : 'ion-plus'"></i>
+                </div>
+                <ion-list>
+                    <div ng-repeat="item in sxjlItem.items" ng-show='sxjlItem.show'>
+                        <ion-item ng-click="toggleGroup(item)" ng-class="{active: isGroupShown(item)}">
+                            <i class="icon" ng-class="isGroupShown(item) ? 'ion-minus' : 'ion-plus'"></i>
+                            &nbsp;{{item.sxmethod}}&nbsp;{{item.sxjltime}}
+                        </ion-item>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="width50">输血品种:</span>
+                            <span class="width50">{{item.sxtype}}</span>
+                        </label>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="width50">输血量:</span>
+                            <span class="width50">{{item.sxl}}</span>
+                        </label>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="width50">输血剂量单位:</span>
+                            <span class="width50">{{item.sxjldw}}</span>
+                        </label>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="width50">输血反应标志:</span>
+                            <span class="width50">{{item.sxfybz}}</span>
+                        </label>
+                    </div>
+                </ion-list>
+            </div>-->
+            <div>
+                <div class="item itemFirst" ng-click="showFeiyongItem()">
+                    	 费用结算 <i class="icon fontBlue" style="float: right" ng-class="feiyongShow ? 'ion-chevron-up' : 'ion-chevron-down'"></i>
+                </div>
+
+               <div style="background-color: #EFEDEF;border-radius: 5px;margin: 5px;width: 97%;float: left;" ng-show='feiyongShow'>
+                <div ng-repeat="item in feiyongItem"   style="float: left;width: 46%;margin-left: 10px;" >
+                    {{item.inpatCostType}}：{{item.inpatCost}}&nbsp;元
+                </div>
+
+               </div>
+
+
+
+
+
+
+
+            </div>
+        </div>
+        <!--  --------------------------------病案首页------------------------------------------------------ -->
+        <div ng-if="isActive == 'ddddd'">
+            <div class="item item-balanced" style="font-size:18px;color:#f8f8f8;height:50px;margin-bottom: 5px"  ng-click="showItem()">
+                <i class="icon ion-person"></i> 基本信息 <i class="icon" style="float: right" ng-class="isShowItem ? 'ion-minus' : 'ion-plus'"></i>
+            </div>
+            <div ng-repeat="item in jibenxinxiBASY.items" ng-show='isShowItem'>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">医疗机构:</span>
+                    <span class="width65">{{item.yiliaojigou}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">组织机构代码:</span>
+                    <span class="width65">{{item.zuzhijigouDM}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">医疗付费方式:</span>
+                    <span class="width65">{{item.yiliaofufeiFS}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">健康卡号:</span>
+                    <span class="width65">{{item.jiankangKH}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">住院次数:</span>
+                    <span class="width65">第&nbsp;{{item.countZY}}&nbsp;次</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">病案号:</span>
+                    <span class="width65">{{item.binganhao}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">姓名:</span>
+                    <span class="width65">{{item.name}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">性别:</span>
+                    <span class="width65">{{item.sex}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">出生日期:</span>
+                    <span class="width65">{{item.birthday}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">年龄:</span>
+                    <span class="width65">{{item.age}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">国籍:</span>
+                    <span class="width65">{{item.guoji}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">年龄(不足1周岁):</span>
+                    <span class="width65">{{item.ageXSE}}&nbsp;岁</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">新生儿出生体重:</span>
+                    <span class="width65">{{item.weightCS}}&nbsp;克</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">新生儿入院体重:</span>
+                    <span class="width65">{{item.weightRY}}&nbsp;克</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">出生地:</span>
+                    <span class="width65">{{item.chushengdi}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">民族:</span>
+                    <span class="width65">{{item.minzu}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">身份证号:</span>
+                    <span class="width65">{{item.IDCard}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">职业:</span>
+                    <span class="width65">{{item.zhiye}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">婚姻:</span>
+                    <span class="width65">{{item.hunyin}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">现住址:</span>
+                    <span class="width65">{{item.address}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">电话:</span>
+                    <span class="width65">{{item.telephone}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">邮编:</span>
+                    <span class="width65">{{item.youbian}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">户口地址:</span>
+                    <span class="width65">{{item.addressHK}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">邮编:</span>
+                    <span class="width65">{{item.youbianHK}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">工作单位及地址:</span>
+                    <span class="width65">{{item.danweiAddress}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">单位电话:</span>
+                    <span class="width65">{{item.danweiTEL}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">邮编:</span>
+                    <span class="width65">{{item.youbianDW}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">联系人姓名:</span>
+                    <span class="width65">{{item.nameLXR}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">关系:</span>
+                    <span class="width65">{{item.relation}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">地址:</span>
+                    <span class="width65">{{item.addressLXR}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">电话:</span>
+                    <span class="width65">{{item.lxrTEL}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">入院途径:</span>
+                    <span class="width65">{{item.ruyuanTJ}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">入院时间:</span>
+                    <span class="width65">{{item.ruyuanTime}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">入院科别:</span>
+                    <span class="width65">{{item.ruyuanKB}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">病房:</span>
+                    <span class="width65">{{item.ruyuanBF}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">转科科别:</span>
+                    <span class="width65">{{item.zhuankeKB}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">出院时间:</span>
+                    <span class="width65">{{item.chuyuanTime}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">出院科别:</span>
+                    <span class="width65">{{item.chuyuanKB}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">病房:</span>
+                    <span class="width65">{{item.chuyuanBF}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowItem' >
+                    <span class="width35">实际住院:</span>
+                    <span class="width65">{{item.shijiZY}}&nbsp;天</span>
+                </label>
+
+            </div>
+
+            <div class="item item-balanced" style="font-size:18px;color:#f8f8f8;height:50px;margin-bottom: 5px"  ng-click="showRenyuanItem()">
+                <i class="icon ion-person-stalker"></i> 人员信息<i class="icon" style="float: right" ng-class="isShowRYItem ? 'ion-minus' : 'ion-plus'"></i>
+            </div>
+            <div ng-repeat="item in renyuanItem.items" ng-show='isShowRYItem'>
+                <label class="item item-input item-divider" ng-show='isShowRYItem' >
+                    <span class="width50">科主任:</span>
+                    <span class="width50">{{item.kezhuren}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowRYItem' >
+                    <span class="width50">主任(副主任)医师:</span>
+                    <span class="width50">{{item.zhurenYS}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowRYItem' >
+                    <span class="width50">主治医师:</span>
+                    <span class="width50">{{item.zhuzhiYS}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowRYItem' >
+                    <span class="width50">住院医师:</span>
+                    <span class="width50">{{item.zhuyuanYS}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowRYItem' >
+                    <span class="width50">责任护士:</span>
+                    <span class="width50">{{item.zerenHS}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowRYItem' >
+                    <span class="width50">进修医师:</span>
+                    <span class="width50">{{item.jinxiuYS}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowRYItem' >
+                    <span class="width50">实习医师:</span>
+                    <span class="width50">{{item.shixiYS}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowRYItem' >
+                    <span class="width50">编码员:</span>
+                    <span class="width50">{{item.bianmayuan}}</span>
+                </label>
+            </div>
+
+            <div class="item item-balanced" style="font-size:18px;color:#f8f8f8;height:50px;margin-bottom: 5px"  ng-click="showZhikongItem()">
+                <i class="icon ion-medkit"></i> 质控信息<i class="icon" style="float: right" ng-class="isShowZKItem ? 'ion-minus' : 'ion-plus'"></i>
+            </div>
+            <div ng-repeat="item in zhikongItem.items" ng-show='isShowZKItem'>
+                <label class="item item-input item-divider" ng-show='isShowZKItem' >
+                    <span class="width50">病案质量:</span>
+                    <span class="width50">{{item.binganZL}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowZKItem' >
+                    <span class="width50">质控医师:</span>
+                    <span class="width50">{{item.zhikongYS}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowZKItem' >
+                    <span class="width50">质控护士:</span>
+                    <span class="width50">{{item.zhikongHS}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowZKItem' >
+                    <span class="width50">质控日期:</span>
+                    <span class="width50">{{item.zhikongDate}}</span>
+                </label>
+            </div>
+
+            <div class="item item-balanced" style="font-size:18px;color:#f8f8f8;height:50px;margin-bottom: 5px"  ng-click="showZhenduanItem()">
+                <i class="icon ion-edit"></i> 门(急)诊诊断<i class="icon" style="float: right" ng-class="isShowZDItem ? 'ion-minus' : 'ion-plus'"></i>
+            </div>
+            <div ng-repeat="item in zhenduanBASY.items" ng-show='isShowZDItem'>
+                <label class="item item-input item-divider" ng-show='isShowZDItem' >
+                    <span class="width35">疾病名称:</span>
+                    <span class="width65">{{item.jibingMC}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowZDItem' >
+                    <span class="width35">疾病编码:</span>
+                    <span class="width65">{{item.jibingBM1}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowZDItem' >
+                    <span class="width35">损伤、中毒的外部原因:</span>
+                    <span class="width65">{{item.waibuYY}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowZDItem' >
+                    <span class="width35">疾病编码:</span>
+                    <span class="width65">{{item.jibingBM2}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowZDItem' >
+                    <span class="width35">病理诊断:</span>
+                    <span class="width65">{{item.bingliZD}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowZDItem' >
+                    <span class="width35">疾病编码:</span>
+                    <span class="width65">{{item.jibingBMBL}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowZDItem' >
+                    <span class="width35">病理号:</span>
+                    <span class="width65">{{item.binglihao}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowZDItem' >
+                    <span class="width35">药物过敏:</span>
+                    <span class="width65">{{item.yaowuGM}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowZDItem' >
+                    <span class="width35">过敏药物:</span>
+                    <span class="width65">{{item.guominYW}}</span>
+                </label>
+                <label class="item item-input item-divider" ng-show='isShowZDItem' >
+                    <span class="width35">血型/Rh:</span>
+                    <span class="width65">{{item.ABORh}}</span>
+                </label>
+            </div>
+            <div>
+                <div class="item item-balanced" style="font-size:18px;color:#f8f8f8;height:50px;margin-bottom: 5px"  ng-click="showZhenduanCYItem()">
+                    <i class="icon ion-edit"></i> 出院诊断 <i class="icon" style="float: right" ng-class=" zhenduanCYItem.show ? 'ion-minus' : 'ion-plus'"></i>
+                </div>
+                <ion-list>
+                    <div ng-repeat="item in zhenduanCYItem.items" ng-show=' zhenduanCYItem.show'>
+                        <ion-item class="item-stable"  ng-click="toggleGroup(item)"  ng-class="{active: isGroupShown(item)}">
+                            <i class="icon" ng-class="isGroupShown(item) ? 'ion-minus' : 'ion-plus'"></i>
+                            &nbsp;
+                            {{item.type}}
+                        </ion-item>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="input-label">疾病名称:</span>
+                            <span class="input-label">{{item.name}}</span>
+                        </label>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="input-label">疾病编码:</span>
+                            <span class="input-label">{{item.jibingBM}}</span>
+                        </label>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="input-label">入院病情:</span>
+                            <span class="input-label">{{item.bingqingRY}}</span>
+                        </label>
+                    </div>
+                </ion-list>
+            </div>
+
+            <div>
+                <div class="item item-balanced" style="font-size:18px;color:#f8f8f8;height:50px;;margin-bottom: 5px"  ng-click="showShoushuBASYm()">
+                    <i class="icon ion-arrow-graph-up-right"></i> 手术/操作信息 <i class="icon" style="float: right" ng-class=" shoushuBASY.show ? 'ion-minus' : 'ion-plus'"></i>
+                </div>
+                <ion-list>
+                    <div ng-repeat="item in shoushuBASY.items" ng-show=' shoushuBASY.show'>
+                        <ion-item class="item-stable"  ng-click="toggleGroup(item)"  ng-class="{active: isGroupShown(item)}">
+                            <i class="icon" ng-class="isGroupShown(item) ? 'ion-minus' : 'ion-plus'"></i>
+                            &nbsp;
+                            {{item.name}}
+                        </ion-item>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="input-label">代码:</span>
+                            <span class="input-label">{{item.daima}}</span>
+                        </label>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="input-label">日期:</span>
+                            <span class="input-label">{{item.date}}</span>
+                        </label>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="input-label">级别:</span>
+                            <span class="input-label">{{item.jibie}}</span>
+                        </label>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="input-label">名称:</span>
+                            <span class="input-label">{{item.name}}</span>
+                        </label>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="input-label">术者:</span>
+                            <span class="input-label">{{item.shuzhe}}</span>
+                        </label>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="input-label">Ⅰ助:</span>
+                            <span class="input-label">{{item.oneZ}}</span>
+                        </label>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="input-label">Ⅱ助:</span>
+                            <span class="input-label">{{item.twoZ}}</span>
+                        </label>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="input-label">切口愈合等级:</span>
+                            <span class="input-label">{{item.qkyhdj}}</span>
+                        </label>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="input-label">麻醉方式:</span>
+                            <span class="input-label">{{item.mazuiFS}}</span>
+                        </label>
+                        <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                            <span class="input-label">麻醉医师:</span>
+                            <span class="input-label">{{item.mazuiYS}}</span>
+                        </label>
+                    </div>
+                </ion-list>
+            </div>
+            <div>
+                <div class="item item-balanced" style="font-size:18px;color:#f8f8f8;height:50px;margin-bottom: 5px"  ng-click="showQitaBASY()">
+                    <i class="icon ion-document"></i> 其他信息<i class="icon" style="float: right" ng-class="isShowQitaBASY ? 'ion-minus' : 'ion-plus'"></i>
+                </div>
+                <div ng-repeat="item in qitaBASY.items" ng-show='isShowQitaBASY'>
+                    <label class="item item-input item-divider" ng-show='isShowQitaBASY' >
+                        <span class="width50">离院方式:</span>
+                        <span class="width50">{{item.liyuanFS}}</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowQitaBASY' >
+                        <span class="width50">拟接收医疗机构名称:</span>
+                        <span class="width50">{{item.njsyljgmc}}</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowQitaBASY' >
+                        <span class="width50">是否有出院31天内再住院计划:</span>
+                        <span class="width50">{{item.isZZY}}</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowQitaBASY' >
+                        <span class="width50">目的:</span>
+                        <span class="width50">{{item.ZZYmd}}</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowQitaBASY' >
+                        <span class="width50">颅脑损伤患者入院前昏迷时间:</span>
+                        <span class="width50">{{item.ryqhmTime}}</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowQitaBASY' >
+                        <span class="width50">颅脑损伤患者入院后昏迷时间:</span>
+                        <span class="width50">{{item.ryhhmTime}}</span>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <div class="item item-balanced" style="font-size:18px;color:#f8f8f8;height:50px;margin-bottom: 5px"  ng-click="showFeiyongBASY()">
+                    <i class="icon ion-social-usd"></i> 费用信息<i class="icon" style="float: right" ng-class="isShowfyBASY ? 'ion-minus' : 'ion-plus'"></i>
+                </div>
+                <div ng-repeat="item in feiyongBASY.items" ng-show='isShowfyBASY'>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">总费用:</span>
+                        <span class="width50">{{item.totalPrice}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">(自付金额):</span>
+                        <span class="width50">{{item.zifuJE}}&nbsp;元</span>
+                    </label>
+                    <div ng-show="isShowfyBASY" style="padding: 10px 17px;"><i class="icon ion-edit"></i>&nbsp;&nbsp;<strong>综合医疗服务类</strong></div>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">一般医疗服务费:</span>
+                        <span class="width50">{{item.ybylfwf}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">一般治疗操作费:</span>
+                        <span class="width50">{{item.ybzlczf}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">护理费:</span>
+                        <span class="width50">{{item.huliF}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">其他费用:</span>
+                        <span class="width50">{{item.qitaFY}}&nbsp;元</span>
+                    </label>
+                    <div ng-show="isShowfyBASY" style="padding: 10px 17px;"><i class="icon ion-edit"></i>&nbsp;&nbsp;<strong>诊断类</strong></div>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">病例诊断费:</span>
+                        <span class="width50">{{item.bingliZDF}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">实验室诊断费:</span>
+                        <span class="width50">{{item.syszdf}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">影像学诊断费:</span>
+                        <span class="width50">{{item.yxxzdf}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">临床诊断项目费:</span>
+                        <span class="width50">{{item.lczdxmf}}&nbsp;元</span>
+                    </label>
+                    <div ng-show="isShowfyBASY" style="padding: 10px 17px;"><i class="icon ion-edit"></i>&nbsp;&nbsp;<strong>治疗类</strong></div>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">非手术治疗项目费:</span>
+                        <span class="width50">{{item.fsszlxmf}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">(临床物理治疗费):</span>
+                        <span class="width50">{{item.lcwlzlf}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">手术治疗费:</span>
+                        <span class="width50">{{item.shoushuZLF}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">(麻醉费):</span>
+                        <span class="width50">{{item.mazuiF}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">(手术费):</span>
+                        <span class="width50">{{item.shoushuF}}&nbsp;元</span>
+                    </label>
+                    <div ng-show="isShowfyBASY" style="padding: 10px 17px;"><i class="icon ion-edit"></i>&nbsp;&nbsp;<strong>康复类</strong></div>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">康复费:</span>
+                        <span class="width50">{{item.kangfuF}}&nbsp;元</span>
+                    </label>
+                    <div ng-show="isShowfyBASY" style="padding: 10px 17px;"><i class="icon ion-edit"></i>&nbsp;&nbsp;<strong>中医类</strong></div>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">中医治疗费:</span>
+                        <span class="width50">{{item.zhongyiZLF}}&nbsp;元</span>
+                    </label>
+                    <div ng-show="isShowfyBASY" style="padding: 10px 17px;"><i class="icon ion-edit"></i>&nbsp;&nbsp;<strong>西药类</strong></div>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">西药费:</span>
+                        <span class="width50">{{item.xiyaoF}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">(抗菌药物费用):</span>
+                        <span class="width50">{{item.kjywfy}}&nbsp;元</span>
+                    </label>
+                    <div ng-show="isShowfyBASY" style="padding: 10px 17px;"><i class="icon ion-edit"></i>&nbsp;&nbsp;<strong>中药类</strong></div>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">中成药费:</span>
+                        <span class="width50">{{item.zhongchengYF}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">中草药费:</span>
+                        <span class="width50">{{item.zhongcaoYF}}&nbsp;元</span>
+                    </label>
+                    <div ng-show="isShowfyBASY" style="padding: 10px 17px;"><i class="icon ion-edit"></i>&nbsp;&nbsp;<strong>血液和血液制品类</strong></div>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">血费:</span>
+                        <span class="width50">{{item.xuefei}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">白蛋白类制品费:</span>
+                        <span class="width50">{{item.bdblzpf}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">球蛋白类制品费:</span>
+                        <span class="width50">{{item.qdblzpf}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">凝血因子类制品费:</span>
+                        <span class="width50">{{item.nxyzlzpf}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">细胞因子类制品费:</span>
+                        <span class="width50">{{item.xbyzlzpf}}&nbsp;元</span>
+                    </label>
+                    <div ng-show="isShowfyBASY" style="padding: 10px 17px;"><i class="icon ion-edit"></i>&nbsp;&nbsp;<strong>耗材类</strong></div>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">检查用一次性医用材料费:</span>
+                        <span class="width50">{{item.ycxyyclfJC}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">治疗用一次性医用材料费:</span>
+                        <span class="width50">{{item.ycxyyclfZL}}&nbsp;元</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">手术用一次性医用材料费:</span>
+                        <span class="width50">{{item.ycxyyclfSS}}&nbsp;元</span>
+                    </label>
+                    <div ng-show="isShowfyBASY" style="padding: 10px 17px;"><i class="icon ion-edit"></i>&nbsp;&nbsp;<strong>其他类</strong></div>
+                    <label class="item item-input item-divider" ng-show='isShowfyBASY' >
+                        <span class="width50">其他费:</span>
+                        <span class="width50">{{item.otherF}}&nbsp;元</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <!--  --------------------------------检验报告------------------------------------------------------ -->
+        <div ng-if="isActive == 'd'">
+            <ion-list>
+                <div ng-repeat="item in jianyanListItem" >
+                    <ion-item ng-click="toggleGroup(item)"  ng-class="{active: isGroupShown(item)}">
+                        <i class="icon" ng-class="isGroupShown(item) ? 'ion-minus' : 'ion-plus'"></i>
+                        &nbsp;
+                        {{item.applyDeptName}} &nbsp;
+                        {{item.applyDate| date:"yyyy-MM-dd"}}
+                    </ion-item>
+                    <label class="item item-input item-divider" ng-show="isGroupShown(item)" ng-click="openall()">
+                        <span class="width23 fontSmall">检验种类名称:</span>
+                        <span class="width77 fontSmall">
+	                        <div>
+	                        	<div ng-class=" isopen ? 'closing' : 'opening'">{{item.testSpecies}}</div>
+	                        	<div style="width: 15%;float: left;" ng-show="isopen" class="fontBlue">
+	                        		展开<i class="icon ion-chevron-down fontBlue"></i>
+	                        	</div>
+	                        	<div style="float: right;padding-right: 10px;" ng-show="!isopen" class="fontBlue">
+	                        		关闭<i class="icon ion-chevron-up fontBlue"></i>
+	                        	</div>
+                        	</div>
+                        </span>
+                    </label>
+
+                    <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                        <span class="width23 fontSmall">申请医生:</span>
+                        <span class="width77 fontSmall">{{item.applyDocName}}</span>
+                    </label>
+                    <label class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                        <span class="width23 fontSmall">报表日期:</span>
+                        <span class="width77 fontSmall">{{item.reportDate| date:"yyyy-MM-dd"}}</span>
+                    </label>
+                    <div class="item item-input item-divider" ng-show="isGroupShown(item)" >
+                        <span class="width23 fontSmall">报告单:</span>
+                        <span class="width77 fontSmall"><a  href="#"  style="color: #FE7A23" ng-click="showBaogao(item)">查看</a></span>
+                    </div>
+                </div>
+            </ion-list>
+        </div>
+       <!--  --------------------------------长期医嘱------------------------------------------------------ -->
+        <div ng-if="isActive == 'e'">
+
+            <ion-list>
+                <div ng-repeat="item in cqyizhuItems">
+                    <ion-item ng-click="toggleGroup(item)"  ng-class="{active: isGroupShown(item)}">
+                        <i class="icon" ng-class="isGroupShown(item) ? 'ion-minus' : 'ion-plus'"></i>
+                        &nbsp;
+
+                        {{item.prescribeDate| date:"yyyy-MM-dd HH:mm"}}
+
+                    </ion-item>
+                    <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px" ng-show="isGroupShown(item)">
+						<tr>
+							<td align="center" valign="middle">
+								<table width="80%">
+									<tr>
+										<td class="width30"><span>医嘱内容:</span></td>
+										<td class="width70"><span>{{item.prescribeContent}}</span></td>
+									</tr>
+								</table>
+								<hr>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div ng-show="isGroupShown(item)" class="divmain" style="margin: 0 0 10px 5px;">开始</div>
+							</td>
+						</tr>
+						<tr>
+							<td align="center" valign="middle">
+								<table width="80%">
+									<tr>
+										<td class="width30"><span>执行时间:</span></td>
+										<td class="width70"><span>{{item.orderExeDate| date:"yyyy-MM-dd HH:mm"}}</span></td>
+									</tr>
+									<tr>
+										<td class="width30"><span>开具医师:</span></td>
+										<td class="width70"><span>{{item.prescribeDocName}}</span></td>
+									</tr>
+									<tr>
+										<td class="width30"><span>核对时间:</span></td>
+										<td class="width70"><span>{{item.nurseCheckDate| date:"yyyy-MM-dd HH:mm"}}</span></td>
+									</tr>
+									<tr>
+										<td class="width30"><span>核对护士:</span></td>
+										<td class="width70"><span>{{item.orderExeDocName}}</span></td>
+									</tr>
+								</table>
+								<hr>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div ng-show="isGroupShown(item)" class="divmain" style="margin: 0 0 10px 5px;">停止</div>
+							</td>
+						</tr>
+						<tr>
+							<td align="center" valign="middle">
+								<table width="80%">
+									<tr>
+										<td class="width30"><span>月日时间:</span></td>
+										<td class="width70"><span>{{item.orderStopDate| date:"yyyy-MM-dd HH:mm"}}</span></td>
+									</tr>
+									<tr>
+										<td class="width30"><span>开具医师:</span></td>
+										<td class="width70"><span>{{item.stopDoctName}}</span></td>
+									</tr>
+									<tr>
+										<td class="width30"><span>执行时间:</span></td>
+										<td class="width70"><span>{{item.orderStopDate| date:"yyyy-MM-dd HH:mm"}}</span></td>
+									</tr>
+									<tr>
+										<td class="width30"><span>执行护士:</span></td>
+										<td class="width70"><span>{{item.stopNurseName}}</span></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+                </div>
+            </ion-list>
+        </div>
+        <!--  --------------------------------临时医嘱------------------------------------------------------ ----------->
+        <div ng-if="isActive == 'f'">
+           <ion-list>
+                <div ng-repeat="item in lsyizhuItems">
+                    <ion-item ng-click="toggleGroup(item)"  ng-class="{active: isGroupShown(item)}">
+                        <i class="icon" ng-class="isGroupShown(item) ? 'ion-minus' : 'ion-plus'"></i>
+                        &nbsp;
+                        {{item.prescribeDate| date:"yyyy-MM-dd HH:mm"}}
+                    </ion-item>
+                    <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px" ng-show="isGroupShown(item)">
+						<tr>
+							<td align="center" valign="middle">
+								<table width="80%">
+									<tr>
+										<td class="width30"><span>医嘱内容:</span></td>
+										<td class="width70"><span>{{item.prescribeContent}}</span></td>
+									</tr>
+								</table>
+								<hr>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div ng-show="isGroupShown(item)" class="divmain" style="margin: 0 0 10px 5px;">开始</div>
+							</td>
+						</tr>
+						<tr>
+							<td align="center" valign="middle">
+								<table width="80%">
+									<tr>
+										<td class="width30"><span>执行时间:</span></td>
+										<td class="width70"><span>{{item.orderExeDate| date:"yyyy-MM-dd HH:mm"}}</span></td>
+									</tr>
+									<tr>
+										<td class="width30"><span>开具医师:</span></td>
+										<td class="width70"><span>{{item.prescribeDocName}}</span></td>
+									</tr>
+									<tr>
+										<td class="width30"><span>核对时间:</span></td>
+										<td class="width70"><span>{{item.nurseCheckDate| date:"yyyy-MM-dd HH:mm"}}</span></td>
+									</tr>
+									<tr>
+										<td class="width30"><span>核对护士:</span></td>
+										<td class="width70"><span>{{item.orderExeDocName}}</span></td>
+									</tr>
+								</table>
+								<hr>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div ng-show="isGroupShown(item)" class="divmain" style="margin: 0 0 10px 5px;">停止</div>
+							</td>
+						</tr>
+						<tr>
+							<td align="center" valign="middle">
+								<table width="80%">
+									<tr>
+										<td class="width30"><span>月日时间:</span></td>
+										<td class="width70"><span>{{item.orderStopDate| date:"yyyy-MM-dd HH:mm"}}</span></td>
+									</tr>
+									<tr>
+										<td class="width30"><span>开具医师:</span></td>
+										<td class="width70"><span>{{item.stopDoctName}}</span></td>
+									</tr>
+									<tr>
+										<td class="width30"><span>执行时间:</span></td>
+										<td class="width70"><span>{{item.orderStopDate| date:"yyyy-MM-dd HH:mm"}}</span></td>
+									</tr>
+									<tr>
+										<td class="width30"><span>执行护士:</span></td>
+										<td class="width70"><span>{{item.stopNurseName}}</span></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+                </div>
+            </ion-list>
+        </div>
+    </ion-content>
+    <ion-footer-bar style="height:auto;width: 100%" >
+        <div style="width: 100%" ng-if="isActive == 'a'">
+            <div style="font-size:small" class="fontBlue">当日费用:{{itemCost}}元&nbsp;累计费用:{{itemCosts}}元</div>
+            <div style="margin-top: 0">
+	            <span class="fontBlue" style="float: left;width: 84%" > 签字:</span> 
+	            <span style="float: right;width: 16%;text-align: center;background-color:red;color: white;border-radius:2px;" ng-click="showBeizhu()">
+	            	<i class="icon" ng-class="isShowBeizhu ? 'ion-minus' : 'ion-plus'"></i> 备注
+	            </span>
+            </div>
+            <div  ng-show='isShowBeizhu' >
+                <p style="color:red">1.以上项目自负比例仅供参考，具体报销金额以医保中心结算为准</p>
+                <p style="color:red">2.以上费用如有异议，请及时向所在科室咨询。患者在24小时不质疑，视为认可该费用。 </p>
+            </div>
+        </div>
+
+    </ion-footer-bar>
+    </ion-view>
+<!--
+<script id="modal.html" type="text/ng-template">
+
+    <div class="modal" >
+
+        <ion-header-bar align-title="left" class="bar-positive">
+       <div class="buttons">
+       <button class="button button-clear icon ion-chevron-left" ng-click="closeModal()"></button>
+      </div>           
+ <h1 class="title">检验报告单</h1>
+        </ion-header-bar>
+       
+        <ion-content>
+            <div style=" width: 100%;margin-top: 10px;height: 100%">
+               <div  class="fontSmall" style="text-align: left">
+
+                    <div style="float: left;width: 50%;padding-left:8px" >
+                       <strong> 开单医生：</strong>{{inhostestc.applyDocName}}
+                    </div>
+                   <div style="float: left;width: 50%" >
+                        <strong> 开单科室： </strong>{{inhostestc.applyDeptName}}
+                    </div>
+
+
+                    <div style="float: left;width: 50%;padding-left:8px" >
+                        <strong>  样本号：</strong>{{inhostestsample.sampleNo}}
+                    </div>
+                    <div style="float: left;width: 50%" >
+                        <strong> 所属病区：</strong>{{inhostestc.ward}}
+                    </div>
+
+
+                       <div style="float: left;width: 50%;padding-left:8px" >
+                           <strong>  就诊类型：</strong>{{ inhosVisitType}}
+                       </div>
+                       <div style="float: left;width: 50%" >
+                           <strong>  样本类型：</strong>{{inhostestsample.sampleTypeCd}}
+
+                   </div>
+               
+
+           <div >
+
+              
+
+
+     <table style="text-align: center;width:100%;border:" class="table">
+            <tr>
+                <th width="33%"><strong>检验项目</strong></th>
+                <th width="33%"><strong>检验结果</strong></th>
+                <th width="33%"><strong>参考值</strong></th>
+                
+            </tr>
+            <tr ng-repeat="item in baogaoItem">
+                <td> {{item.testItemName}}</td>
+                <td>{{item.testValue}}/{{item.testMeUnit}}</td>
+                <td>{{item.referenceLimit}}</td>
+            </tr>
+        </table>
+
+
+
+
+           </div>
+                
+                <div style="text-align: left" class="fontSmall">
+                    <div style="float: left;width: 50%;padding-left:8px" >
+                            <strong>检验日期：</strong>{{inhostestc.examineDate| date:"yyyy-MM-dd"}}
+                        </div>
+                    <div style="float: left;width: 50%" >
+                            <strong>报告时间：</strong>{{inhostestc.reportDate| date:"yyyy-MM-dd"}}
+
+                    </div>
+                        <div style="float: left;width: 50%;padding-left:8px" >
+                            <strong>检验者：</strong>{{inhostestc.inspectTechnicianName}}
+                        </div>
+                        <div style="float: left;width: 50%" >
+                            <strong>核对者：</strong>{{inhostestc.verifyDocName}}
+                        </div>
+                </div>
+
+
+            </div>
+        </ion-content>
+      
+    </div>
+</script>
+  -->
